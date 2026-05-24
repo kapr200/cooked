@@ -1,5 +1,6 @@
 /* style.css */
 
+/* === GLOBÁLNÍ STYLY === */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
@@ -34,6 +35,7 @@ header p {
     padding: 0 20px;
 }
 
+/* === STUDIJNÍ POHLED & KARTY (STUDY VIEW) === */
 .qa-card {
     background: #fff;
     border-radius: 8px;
@@ -41,7 +43,7 @@ header p {
     margin-bottom: 25px;
     border-left: 5px solid #2a5298;
     overflow: hidden;
-    transition: transform 0.2s;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .qa-card:hover {
@@ -55,7 +57,7 @@ header p {
     margin: 0;
     font-size: 1.2rem;
     color: #1e3c72;
-    border-bottom: 1px solid #eed;
+    border-bottom: 1px solid #eee; /* Opraven podivný odstín #eed na čistou šedou */
     font-weight: 600;
 }
 
@@ -73,6 +75,7 @@ header p {
     margin-bottom: 5px;
 }
 
+/* === FORMÁTOVÁNÍ KÓDU A MATEMATIKY === */
 code {
     background-color: #eef2f7;
     padding: 2px 6px;
@@ -116,7 +119,7 @@ pre {
     font-style: italic;
 }
 
-/* Stylování kontejneru pro schémata a obrázky */
+/* === SCHÉMATA A OBRÁZKY === */
 .diagram-box {
     text-align: center;
     margin: 20px 0;
@@ -133,11 +136,12 @@ pre {
     font-size: 1.1rem;
 }
 
-.diagram-box img {
+.diagram-box img, .flashcard img {
     max-width: 100%;
     height: auto;
-    display: block;
+    border-radius: 6px;
     margin: 10px auto;
+    display: block;
 }
 
 .placeholder-image {
@@ -150,37 +154,31 @@ pre {
     border-radius: 6px;
     font-size: 0.95rem;
 }
+
+/* === NAVIGACE A ROZLOŽENÍ POHLEDŮ === */
 .nav-container {
     text-align: center;
     margin: 20px 0;
 }
-.btn {
-    background-color: #1e3c72;
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    font-size: 16px;
-    font-weight: bold;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.1s;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+
+#flashcards-view, #test-view, #study-view {
+    background: #ffffff;
+    position: relative;
+    z-index: 10;
+    padding: 10px 0;
 }
-.btn:hover {
-    background-color: #2a5298;
+
+.actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap; /* Zajišťuje, že se tlačítka na mobilu poskládají pod sebe */
 }
-.btn:active {
-    transform: scale(0.98);
-}
-.btn-success {
-    background-color: #2ecc71;
-}
-.btn-success:hover {
-    background-color: #27ae60;
-}
+
+/* === TESTOVACÍ MODUL (TEST VIEW) === */
 #test-question-area {
     font-weight: bold;
 }
+
 #test-view {
     display: none;
     background: white;
@@ -190,6 +188,7 @@ pre {
     margin-top: 20px;
     margin-bottom: 25px;
 }
+
 .test-input {
     width: 100%;
     height: 120px;
@@ -202,10 +201,12 @@ pre {
     resize: vertical;
     box-sizing: border-box;
 }
+
 .test-input:focus {
     border-color: #1e3c72;
     outline: none;
 }
+
 .test-feedback {
     display: none;
     background-color: #f4f7f6;
@@ -214,49 +215,54 @@ pre {
     margin: 20px 0;
     border-radius: 4px;
 }
+
 .progress-bar {
     color: #7f8c8d;
     font-size: 14px;
     margin-bottom: 15px;
     font-weight: bold;
 }
-.actions {
-    display: flex;
-    gap: 10px;
-}
 
-/* Globální základ pro všechna tlačítka */
+/* === UNIFIKOVANÁ TLAČÍTKA === */
+/* Sloučeny obě původní kolidující definice .btn */
 .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
     font-family: inherit;
-    font-size: 0.95rem;
+    font-size: 16px;
     font-weight: 600;
-    padding: 10px 20px;
+    padding: 12px 24px;
     border: none;
-    border-radius: 6px;
+    border-radius: 5px;
     cursor: pointer;
     transition: all 0.2s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     user-select: none;
+    text-decoration: none;
 }
 
-/* Efekt při kliknutí (mírné máčknutí dolů) */
+/* Efekty stavů tlačítek */
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+}
+
 .btn:active {
     transform: translateY(1px);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
-/* Stav, kdy je tlačítko zakázané (např. tlačítko Zpět na začátku) */
 .btn:disabled {
     opacity: 0.5;
     cursor: not-allowed;
     pointer-events: none;
+    transform: none;
+    box-shadow: none;
 }
 
-/* 1. Modré tlačítko (Zkontrolovat odpověď) */
+/* Barevné varianty tlačítek */
 .btn-primary {
     background-color: #1e3c72;
     color: #ffffff;
@@ -266,7 +272,6 @@ pre {
     background-color: #2a5298;
 }
 
-/* 2. Zelené tlačítko (Spustit testík) */
 .btn-success {
     background-color: #2ecc71;
     color: #ffffff;
@@ -276,7 +281,6 @@ pre {
     background-color: #27ae60;
 }
 
-/* 3. Šedé tlačítko (Zpět na studium, Zpět, Další) */
 .btn-secondary {
     background-color: #eef2f7;
     color: #4a5568;
@@ -287,9 +291,9 @@ pre {
 .btn-secondary:hover {
     background-color: #e2e8f0;
     color: #1a202c;
+    box-shadow: none;
 }
 
-/* 4. Obrysové zelené tlačítko (Umím to!) */
 .btn-outline {
     background-color: transparent;
     border: 2px solid #2ecc71;
@@ -301,16 +305,9 @@ pre {
     background-color: #2ecc71;
     color: #ffffff;
 }
-/* Ochrana proti prolínání pohledů na pozadí */
-#flashcards-view, #test-view, #study-view {
-    background: #ffffff;
-    position: relative;
-    z-index: 10;
-    padding: 10px 0;
-}
 
 
-/* --- STYLY PRO RESPONSIVNÍ 3D KARTIČKY --- */
+/* === STYLY PRO RESPONSIVNÍ 3D KARTIČKY === */
 .flashcard-container {
     perspective: 1000px;
     width: 100%;
@@ -327,6 +324,7 @@ pre {
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     background-color: #ffffff;
     cursor: pointer;
+    transform: translate3d(0,0,0); /* HW akcelerace pro hladší animaci */
 }
 
 /* Rotace celé karty při otočení */
@@ -346,6 +344,9 @@ pre {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    
+    /* Cross-browser podpora pro skrytí zadní strany při otáčení */
+    -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
     transition: opacity 0.3s;
 }
@@ -373,7 +374,7 @@ pre {
     pointer-events: none;
 }
 
-/* PŘEKLOPENÝ STAV: Prohození pozicování, aby se výška automaticky přizpůsobila rubu */
+/* PŘEKLOPENÝ STAV: Prohození pozicování pro automatickou výšku */
 .flashcard.flipped .flashcard-front {
     position: absolute;
     top: 0;
@@ -398,13 +399,4 @@ pre {
     color: #888;
     margin-bottom: 15px;
     font-weight: bold;
-}
-
-/* Automatické zmenšení obrázků/schémat, aby nikdy nepřetékaly z karty */
-.flashcard img, .diagram-box img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 6px;
-    margin-top: 10px;
-    display: block;
 }
