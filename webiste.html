@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Architektura operačních systémů - Přehled okruhů</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+    <h1>Architektura operačních systémů</h1>
+    <p>Kompletní přehled zkouškových okruhů s otázkami a odpověďmi</p>
+</header>
+
+<div class="container">
+
+    <div class="nav-container">
+    <button id="btn-toggle-test" class="btn btn-success" onclick="startTest()">Spustit testík 📝</button>
+    <button id="btn-toggle-study" class="btn btn-secondary" onclick="startStudy()" style="display: none;">Zpět na studium 📚</button>
+    <button id="btn-toggle-flashcards" class="btn btn-info" onclick="startFlashcards()" style="background-color: #17a2b8; color: white; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">Režim Kartiček 🎴</button>
+</div>
+<div id="flashcards-view" style="display: none;">
+        <div class="test-progress-info">
+            Kartička <span id="current-flashcard-num">1</span> ze <span id="total-flashcards-num">0</span>
+        </div>
+        
+        <div class="flashcard-container">
+            <div id="flashcard-box" class="flashcard">
+                <div class="flashcard-front">
+                    <span class="card-label">Otázka (klikni pro otočení)</span>
+                    <div id="flashcard-front-text" style="font-size: 18px; font-weight: 600;"></div>
+                </div>
+                <div class="flashcard-back">
+                    <span class="card-label">Správná odpověď</span>
+                    <div id="flashcard-back-text"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation-buttons-group" style="display: flex; gap: 10px; justify-content: center;">
+            <button id="btn-prev-flashcard" class="btn btn-secondary" onclick="previousFlashcard()">← Předchozí</button>
+            <button id="btn-next-flashcard" class="btn btn-primary" onclick="nextFlashcard()">Další kartička →</button>
+        </div>
+    </div>
+
+<div id="test-view" style="display: none;">
+    <div class="test-progress-info">
+        Otázka <span id="current-question-num" class="progress-number">1</span> z <span id="total-questions-num" class="progress-number">0</span>
+        <span id="question-status-indicator"></span>
+    </div>
+    
+    <div id="test-question-area"></div>
+    
+    <div class="answer-section">
+        <label for="test-user-input" class="input-label">Vaše odpověď (na vyzkoušení):</label>
+        <textarea id="test-user-input" class="test-input" placeholder="Zkuste vlastními slovy odpovědět..."></textarea>
+    </div>
+
+    <div class="action-buttons-group">
+        <button id="btn-check" class="btn btn-primary" onclick="checkAnswer()">Zkontrolovat odpověď</button>
+        <button id="btn-toggle-done" class="btn btn-outline" onclick="toggleQuestionDone()">Umím to!</button>
+    </div>
+
+    <div class="settings-box">
+        <label for="toggle-remember" class="checkbox-label">
+            <input type="checkbox" id="toggle-remember" checked>
+            <span>Pamatovat si stav "Umím to" i po zavření prohlížeče</span>
+        </label>
+    </div>
+
+    <div class="navigation-buttons-group">
+        <button id="btn-prev-question" class="btn btn-secondary" onclick="previousQuestion()">← Zpět</button>
+        <button id="btn-next-question" class="btn btn-secondary" onclick="nextQuestion()">Další →</button>
+    </div>
+
+    <div id="test-feedback-box" class="test-feedback" style="display: none;">
+        <strong class="feedback-title">Správná vzorová odpověď:</strong>
+        <div id="test-correct-answer-text">Zde se ukáže klíč.</div>
+    </div>
+</div>
+    </div>
+
+    <div id="study-view">
+
+    <div class="qa-card">
+        <h2 class="question">1. Popište architekturu současných počítačů</h2>
+        <div class="answer">
+            Vychází z koncepce, která vznikla v období mezi lety 1940–1945 v USA a je označována jako <span class="highlight">von Neumannova architektura</span>. Největší podíl na jejím vzniku měl John von Neumann.
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">2. Nakreslete části paměťového podsystému počítače</h2>
+        <div class="answer">
+            <div class="diagram-box">
+                <img src="1.png" alt="Schéma paměťového podsystému" />
+            </div>
+        </div>
+    </div>
+             
+    <div class="qa-card">
+        <h2 class="question">3. Uveďte, jaké jsou části paměťového podsystému a vlastnosti paměťové buňky operační paměti</h2>
+        <div class="answer">
+            <p><span class="highlight">Komponenty podsystému:</span></p>
+            <ul>
+                <li>Adresový registr paměti RAP</li>
+                <li>Řadič paměti</li>
+                <li>Údajový registr paměti RDP</li>
+                <li>Paměťové buňky</li>
+            </ul>
+
+            <p><span class="highlight">Vlastnosti paměťové buňky:</span></p>
+            <ul>
+                <li>Paměťová buňka obsahuje jednu slabiku – <strong>byte</strong>.</li>
+                <li>Při čtení se její obsah neporuší.</li>
+                <li>Lze zapsat novou informaci v případě, že se tím stávající obsah zruší.</li>
+                <li>Má přidělenou jednu adresu.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">4. Vysvětlete hierarchii paměťového podsystému</h2>
+        <div class="answer">
+            <div class="diagram-box">
+                <img src="2.png" alt="Hierarchie paměťového podsystému" />
+            </div>
+            <ul>
+                <li><strong>Řídící paměť:</strong> Přímo vázána na řadič počítače.</li>
+                <li><strong>Zápisníková paměť:</strong> Propojena s operační jednotkou procesoru.</li>
+                <li><strong>Operační paměť:</strong> Komunikuje jak s řadičem a operační jednotkou, tak se vstupně-výstupními subsystémy.</li>
+                <li><strong>Vnější velkokapacitní paměť:</strong> Je k systému připojena přes rozhraní vstupů a výstupů (Vstup / Výstup).</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">5. Napište algoritmus strojových instrukcí výpočtu pro tříadresní počítač</h2>
+        <div class="answer">
+            Zadání: <code>X = (A+B)*(C-D)</code><br>
+            Formát: <code>OPK kód, Cíl, Zdroj1, Zdroj2</code>
+            <pre>ADD T1, A, B  ; Sečti A + B a výsledek ulož do pomocného místa T_1
+            SUB T2, C, D  ; Odejmi C - D a výsledek ulož do pomocného místa T_2
+            MUL X, T1, T2 ; Vynásob T1 * T2 a konečný výsledek ulož do X</pre>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">6. Napište algoritmus strojových instrukcí výpočtu pro dvouadresní počítač a jednoadresní počítač</h2>
+        <div class="answer">
+            Zadání: <code>X = (A+B)*(C-D)</code><br><br>
+            
+            <span class="highlight">Dvouadresní počítač</span> (Formát: <code>OPK kód, Cíl/Zdroj1, Zdroj2</code>):
+            <pre>
+MOV T1, A   ; Přesuneme hodnotu A do pomocné T1
+ADD T1, B   ; Přičti B k T1, tzn. A+B
+MOV X, C    ; Přesuň hodnotu C do výsledného místa X
+SUB X, D    ; Odejmi D od X, C - D
+MUL X, T1   ; Vynásob X * T1, (A + B) * (C – D)
+            </pre>
+
+            <span class="highlight">Jednoadresní počítač</span> (Formát: <code>OPK kód, Adresa</code>, používáme procesový registr – Akumulátor AC):
+            <pre>
+LOAD A      ; Načteme hodnotu A do AC, AC = A
+ADD B       ; Přičteme hodnotu B do AC, AC = AC + B
+STORE T1    ; Uložíme hodnotu AC do pomocné T1
+LOAD C      ; Načteme hodnotu C do AC, AC = C
+SUB D       ; Odečteme D od AC, AC = AC - D
+MUL T1      ; Vynásob akumulátor hodnotou T1, AC = AC * T1
+STORE X     ; Ulož výsledek do paměti X
+            </pre>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">7. Jakými metodami se určují adresy a operandy instrukcí a ke každé metodě uveďte příklady</h2>
+        <div class="answer">
+            <ul>
+                <li><strong>Přímé adresování:</strong> <code>ADD A1, A2</code></li>
+                <li><strong>Přímý operand:</strong> <code>ADD 4, 5</code></li>
+                <li><strong>Nepřímé adresování:</strong> <code>ADD i A1, A2</code></li>
+                <li><strong>Implicitní adresování:</strong> <code>ADD R1, R2</code> (přesun nebo práce mezi registry)</li>
+                <li><strong>Implicitní operand:</strong> <code>ADD 2</code></li>
+                <li><strong>Modifikované adresování:</strong> <code>ADD 3, 137</code></li>
+                <li><strong>Relativní adresování:</strong> <code>ADD A1, A2</code></li>
+                <li><strong>Asociativní adresování:</strong> <code>ADD A1, A2</code></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">8. Vysvětlete na příkladu získání operandu přímým adresování</h2>
+        <div class="answer">
+            <code>ADD 543</code> – přímý odkaz na adresu 543, procesor se na tu adresu podívá a přičte to číslo v adrese.
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">9. Vysvětlete nepřímé adresování</h2>
+        <div class="answer">
+            Adresová část ukazuje na paměťové místo, kde je teprve uložena skutečná adresa operandu.
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">10. Co je to implicitní adresování a implicitní operand?</h2>
+        <div class="answer">
+            Místo uložení operandu nebo operand samotný není v instrukci vůbec explicitně zapsán. Je totiž jednoznačně dán samotným operačním kódem (instrukcí) – procesor dopředu ví, se kterým registrem nebo konstantou má pracovat.
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">11. Jak lze modifikovat základní adresu v instrukci pomocí indexových registrů</h2>
+        <div class="answer">
+            Základní adresa se spočítá tak, že se k základní adrese z instrukce přičte hodnota z indexového registru. Sčítání provádí sčítačka.
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">12. Uveďte modifikaci adresy operandu pomocí relativní adresace a indexregistru</h2>
+        <div class="answer">
+            <p>Výsledná adresa se spočítá tak, že se k aktuální pozici v programu (čítači instrukcí ČI / PC) přičte číslo (posun) zadané v instrukci.</p>
+            <div class="formula">Skutečná adresa = Čítač instrukcí (ČI) + Posun v instrukci</div>
+            
+            <p>Výsledná adresa se spočítá tak, že se k základní adrese z instrukce přičte hodnota uložená v indexovém registru.</p>
+            <div class="formula">Skutečná adresa = Základní adresa + Indexový registrar</div>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">13. Co je to asociativní adresování?</h2>
+        <div class="answer">
+            Informace se v paměti vyhledává na základě shody samotného obsahu. Probíhá zde tzv. paralelní vyhledávání, kdy se zadaný klíč porovnává se všemi paměťovými místy najednou.
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">14. Jakými metody komunikuje centrální procesor s periferními zařízeními a metody srovnejte</h2>
+        <div class="answer">
+            <ol>
+                <li><strong>Programově řízený vstup/výstup:</strong> CPU se aktivně ptá a čeká na vstup/výstup.</li>
+                <li><strong>Vstup/výstup řízený přerušením:</strong> Periferie si CPU zavolá, když něco potřebuje.</li>
+                <li><strong>Přímý přístup do paměti (DMA):</strong> Data jdou rovnou z periferie do paměti, nejdou do CPU. Řídí to DMA – Direct Memory Access.</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">15. Vysvětlete metodu podmíněného přenosu dat mezi periferním zařízením a procesorem</h2>
+        <div class="answer">
+            Při podmíněném přenosu dat (dotazování) procesor v programu neustále v cyklu kontroluje stavový registrar periferie a data přenese až v momentě, kdy je splněna podmínka její připravenosti.
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">16. Popište algoritmus komunikace periferního zařízení pomocí přerušení</h2>
+        <div class="answer">
+            CPU vykonává svůj hlavní program a periferie pracuje samostatně. Jakmile je periferie připravena na přenos dat, vysle do CPU signál žádosti o přerušení (IRQ). CPU dokončí aktuální instrukci, uloží si rozpracovanou práci, odskočí do obslužného programu, kde bleskově provede přenos dat a následně se vrátí zpět k původnímu programu.
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">17. Popište algoritmus komunikace periferního zařízení prostřednictví DMA, včetně variant</h2>
+        <div class="answer">
+            <ul>
+                <li><strong>CPU odstartuje:</strong> Procesor řekne řadiči DMA, odkud, kam a kolik dat se má přenést.</li>
+                <li><strong>Řadič přenáší:</strong> Řadič DMA kopíruje data z periferie přímo do paměti úplně bez účasti CPU.</li>
+                <li><strong>Konec:</strong> Po přenosu celého bloku dat řadič nahlásí CPU, že je hotovo (přerušením).</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">18. Uveďte odlišná schémata počítačů oproti Von Neumannově koncepci</h2>
+        <div class="answer">
+            SISD, SIMD, MIMD, <strong>Harvardova koncepce</strong> – má oddělenou paměť pro program a data.
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">19. Nakreslete architekturu SISD a uveďte čím se odlišuje od von Neumannově koncepci</h2>
+        <div class="answer">
+            <div class="diagram-box">
+                <img src="3.png" alt="Architektura SISD" />
+            </div>
+            SISD je založen na Neumannově koncepci. Jedná se o sériový procesor s jedním tokem instrukcí a jedním tokem dat.
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">20. Nakreslete architekturu víceprocesorového systému SIMD</h2>
+        <div class="answer">
+            <div class="diagram-box">
+                <img src="4.png" alt="Architektura SIMD" />
+            </div>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">21. Nakreslete architekturu víceprocesorového systému MIMD</h2>
+        <div class="answer">
+            <div class="diagram-box">
+                <img src="5.png" alt="Architektura MIMD" />
+            </div>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">22. Definujte a určete funkce operačního systému</h2>
+        <div class="answer">
+            <p><strong>Definice:</strong> OS řídí počítač, spravuje jeho hardware a tvoří rozhraní mezi uživatelem a strojem.</p>
+            <p><span class="highlight">Funkce:</span> Správa procesů, paměti, souborů, periferií a ochrana a bezpečnost.</p>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">23. Které jsou hlavní sféry zájmu v operačních systémech?</h2>
+        <div class="answer">
+            <ul>
+                <li><strong>Abstrakce (Virtuální stroj):</strong> Maskuje složitý hardware a poskytuje aplikacím jednoduché rozhraní.</li>
+                <li><strong>Správa prostředků (Arbitráž):</strong> Spravedlivě a bezpečně dělí čas procesoru, operační paměť a periferie mezi běžící programy.</li>
+                <li><strong>Izolace a bezpečnost:</strong> Hlídá, aby jeden běžící program nemohl přepsat data jiného programu nebo shodit celý systém.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">24. Vysvětlete vnitřní a vnější rozhraní operačního systému</h2>
+        <div class="answer">
+            <ul>
+                <li><strong>Vnější rozhraní:</strong>
+                    <ul>
+                        <li><em>Uživatelské rozhraní:</em> Grafické nebo textové.</li>
+                        <li><em>Programové rozhraní (API / Systémová volání):</em> Sada funkcí, přes které programy žádají OS o služby.</li>
+                    </ul>
+                </li>
+                <li><strong>Vnitřní rozhraní:</strong>
+                    <ul>
+                        <li><em>Ovladače zařízení:</em> Programy, které překládají obecné příkazy jádra do řeči daného hardwaru.</li>
+                        <li><em>Rozhraní jádra:</em> Propojuje jednotlivé moduly OS.</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">25. Jaká je vazba operačního systému na hardware počítače a aplikační programy?</h2>
+        <div class="answer">
+            OS přímo ovládá a spravuje hardware, používáme k tomu ovladače. Aplikace nemohou na hardware sahat přímo. Vše dělají přes operační systém, který hardware hlídá a přiděluje jim ho.
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">26. K čemu slouží BIOS?</h2>
+        <div class="answer">
+            Základní program uložený na základní desce počítače, který slouží jako most mezi hardwarem a operačním systémem.
+            <ul>
+                <li><strong>POST (Power-On Self-Test):</strong> Ihned po zapnutí počítače otestuje, zda správně funguje základní hardware.</li>
+                <li><strong>Zavádění OS (Bootování):</strong> Najde na disku operační systém a spustí ho.</li>
+                <li><strong>Konfigurace hardwaru:</strong> Umožňuje uživateli měnit základní nastavení hardwaru.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">27. Vysvětlete architekturu operačního systému s virtuálními počítači</h2>
+        <div class="answer">
+            <strong>Hypervizor:</strong> Je to klíčová vrstva programu, která je přímo na hardwaru (nebo na hostitelském OS). Tento hypervizor rozděluje fyzické prostředky a rozděluje je pro virtuální stroje. Každý virtuální stroj si myslí, že má celý počítač jen pro sebe, a může v něm běžet úplně jiný operační systém.
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">28. Vysvětlete architekturu operačního systému s modelem klient-server</h2>
+        <div class="answer">
+            Minimalizace rozsahu jádra OS (<strong>mikrokernel</strong>) – část funkcí OS je implementována do úrovně uživatelských procesů (zasílání požadavků mezi procesy) a mikrokernel zajišťuje zejména komunikaci.
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">29. Nakreslete vrstvenou architekturu operačního systému (generické komponenty)</h2>
+        <div class="answer">
+            <div class="diagram-box">
+                <img src="6.png" alt="Vrstvená architektura operačního systému" />
+            </div>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">30. Jaký je rozdíl mezi programem a procesem, a které zdroje jsou nutné pro běh procesu?</h2>
+        <div class="answer">
+            <ul>
+                <li><strong>Program:</strong> Je to samotný kód, který nic nedělá, dokud ho nespustíš.</li>
+                <li><strong>Proces:</strong> Je aktivní. Je to program v momentě, kdy je načtený do paměti a právě se vykonává procesorem.</li>
+            </ul>
+            <strong>Nutné zdroje:</strong> CPU, RAM, I/O, přístup k souborům a systémové prostředky (např. PID, přístupová práva, atd.).
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">31. Vysvětlete na stavovém diagramu základní stavy procesů</h2>
+        <div class="answer">
+            <ul>
+                <li><strong>Běžící (Run):</strong> Procesu je přidělen procesor a aktuálně se vykonávají jeho instrukce.</li>
+                <li><strong>Připravený (Ready):</strong> Proces je schopen běhu, má vše potřebné a čeká ve frontě na přidělení procesoru.</li>
+                <li><strong>Čekající / Blokovaný (Wait):</strong> Proces nemůže běžet, protože žádá o službu nebo čeká na nějakou událost (např. vstup/výstup dat).</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">32. Nakreslete 3-stavový diagram procesů a určete přechody mezi stavy</h2>
+        <div class="answer">
+            <div class="diagram-box">
+                <img src="7.png" alt="3-stavový diagram procesů" />
+            </div>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">33. Nakreslete 5-stavový diagram procesů a vysvětlete jednotlivé stavy</h2>
+        <div class="answer">
+            <div class="diagram-box">
+                <img src="8.png" alt="5-stavový diagram procesů" />
+            </div>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">34. Jakým způsobem jsou implementovány procesy v paměti a popište strukturu</h2>
+        <div class="answer">
+            Proces je v paměti implementován jako <strong>kontext procesu</strong>. Skládá se ze samostatného adresového prostoru (paměti pro program) a z řídicí tabulky systému (<strong>PCB</strong>).
+            <p><span class="highlight">Struktura PCB obsahuje:</span></p>
+            <ul>
+                <li>Stav procesu</li>
+                <li>Čítač instrukcí</li>
+                <li>Registry procesoru</li>
+                <li>Informace potřebné pro plánování CPU</li>
+                <li>Informace potřebné pro správu paměti</li>
+                <li>Účtovací informace</li>
+                <li>Informace potřebné pro správu I/O</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">35. Popište princip přepínání kontextu procesu a uveďte, kterých informací se týká</h2>
+        <div class="answer">
+            Při přerušení procesoru OS uloží aktuální stav běžícího procesu A do jeho tabulky <code>PCB_A</code> a načte stav nového procesu B z jeho tabulky <code>PCB_B</code>. Tato operace slouží k bezpečnému návratu k rozpracované práci, ale pro systém představuje čistě časovou režijní ztrátu.
+            <p><strong>Týká se to těchto informací:</strong> Čítače instrukcí, hodnot všech registrů procesoru, stavu procesu, informací o správě paměti a seznamu otevřených souborů.</p>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">36. Jaký je rozdíl mezi preemptivním a nepreemptivním plánováním procesů?</h2>
+        <div class="answer">
+            <ul>
+                <li><strong>Preemptivní plánování:</strong> Umožňuje systému běžící proces přerušit a odebrat mu procesor.</li>
+                <li><strong>Nepreemptivní plánování:</strong> Neumožňuje systému běžící proces přerušit a odebrat mu procesor násilím (proces se ho musí vzdat sám).</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">37. Jaká jsou kritéria krátkodobého plánování a uveďte plánovací algoritmy</h2>
+        <div class="answer">
+            <strong>Kritéria:</strong> Spravedlnost, efektivita, čas odezvy, doba obrátky, průchodnost.
+            <p><strong>Plánovací algoritmy:</strong> FCFS, SPN (SJF), SRT, prioritní, cyklické.</p>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">38. Na příkladu uveďte plánovací algoritmus FCFS</h2>
+        <div class="answer">
+            <div class="diagram-box">
+                <img src="9.png" alt="Algoritmus FCFS" />
+            </div>
+            CPU zpracuje první proces, který mu dojde, i když má větší dobu provádění.
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">39. Na příkladu uveďte plánovací algoritmus SPN (SJF)</h2>
+        <div class="answer">
+            <div class="diagram-box">
+                <img src="10.png" alt="Algoritmus SPN / SJF" />
+            </div>
+            CPU zpracuje nejrychlejší proces, i kdyby došel poslední.
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">40. Na příkladu uveďte plánovací algoritmus SRT</h2>
+        <div class="answer">
+            <div class="diagram-box">
+                <img src="11.png" alt="Algoritmus SRT" />
+            </div>
+            Plánovač v každém okamžiku vybírá proces, kterému zbývá nejméně času do dokončení. Pokud do systému dorazí nový proces, který má kratší zbývající čas než aktuálně běžící proces, dojde k preempci.
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">41. Na příkladu uveďte plánovací algoritmus prioritní</h2>
+        <div class="answer">
+            Prioritní plánování přiděluje každému procesu číselnou prioritu a procesor vždy dostane ten proces, který má nejvyšší prioritu.
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">42. Na příkladu uveďte plánovací algoritmus cyklického plánování</h2>
+        <div class="answer">
+            <div class="diagram-box">
+                <img src="12.png" alt="Cyklické plánování / Round Robin" />
+            </div>
+            Přiděluje každému procesu procesor na pevně stanovený časový úsek, tzv. <strong>časové kvantum</strong>. Po jeho uplynutí je proces přerušen, zařazen na konec fronty a procesor dostane další proces v pořadí.
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">43. Jakými principy si procesy vyměňují data? Uveďte jejich výhody a nevýhody</h2>
+        <div class="answer">
+            <ul>
+                <li><strong>Sdílená paměť (Shared Memory):</strong>
+                    Procesy si vytvoří společný segment paměti, do kterého mohou oba přistupovat a číst/zapisovat data přímo.
+                    <br><em>Výhody:</em> Velmi vysoká rychlost přenosu dat, protože data se nemusí kopírovat přes jádro OS.
+                    <br><em>Nevýhody:</em> Komplikovaná synchronizace (procesy si nesmí přepisovat data navzájem, což vyžaduje zámky/semafory) a riziko chyb při přístupu do sdíleného prostoru.
+                </li>
+                <li><strong>Zasílání zpráv (Message Passing):</strong>
+                    Procesy si posílají data prostřednictvím zpráv, které zprostředkovává operační systém (jádro).
+                    <br><em>Výhody:</em> Jednodušší implementace, systém automaticky řeší synchronizaci a je bezpečnější.
+                    <br><em>Nevýhody:</em> Pomalejší přenos dat, protože každá zpráva musí být zkopírována přes jádro OS.
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">44. Co je to souběh u procesů? Vysvětlete na příkladu</h2>
+        <div class="answer">
+            Souběh je situace, kdy výsledek operace více procesů závisí na náhodném pořadí jejich provedení.
+            <p><strong>Příklad:</strong> Máme sdílený účet s hodnotou 100 Kč a dva procesy chtějí přidat 50 Kč.</p>
+            <ol>
+                <li>Oba procesy načtou hodnotu 100 Kč.</li>
+                <li>Proces A přičte 50 Kč a zapíše 150 Kč.</li>
+                <li>Proces B přičte 50 Kč k původní stovce a zapíše rovněž 150 Kč.</li>
+            </ol>
+            <p><em>Výsledek:</em> Místo očekávaných 200 Kč je v paměti 150 Kč, protože zápis procesu B přepsal výsledek procesu A.</p>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">45. Popište problém kritické sekce a metody jeho řešení</h2>
+        <div class="answer">
+            Kritická sekce nastává, když se více procesů pokouší přistupovat ke sdíleným datům (např. paměti nebo souborům) ve stejném okamžiku.
+            <p><span class="highlight">Metody řešení:</span></p>
+            <ul>
+                <li><strong>Zámky (Mutexy):</strong> Nejjednodušší mechanismus. Proces před vstupem do kritické sekce zámek „zamkne“ (zablokuje) a po výstupu jej opět „odemkne“.</li>
+                <li><strong>Semafory:</strong> Jde o celočíselnou proměnnou, se kterou lze provádět pouze dvě atomické operace: <code>wait</code> (snížení hodnoty) a <code>signal</code> (zvýšení hodnoty).</li>
+                <li><strong>Monitory:</strong> Vyšší programovací konstrukce (vysokoúrovňový jazyk), která automaticky zajišťuje vzájemné vyloučení.</li>
+                <li><strong>Zasílání zpráv:</strong> Procesy si vyměňují data skrze zprávy, čímž obcházejí přímé sdílení paměti.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">46. Jaké jsou požadavky na řešení problému kritických sekcí?</h2>
+        <div class="answer">
+            <ul>
+                <li><strong>Vzájemné vyloučení (Mutual Exclusion):</strong> Pokud proces právě vykonává svou kritickou sekci, nesmí v ní v ten samý okamžik smět být žádný jiný proces.</li>
+                <li><strong>Pokrok (Progress):</strong> Pokud nikdo zrovna není v kritické sekci a existují procesy, které do ní chtějí vstoupit, musí být rozhodnutí o tom, kdo vstoupí jako první, učiněno bezodkladně.</li>
+                <li><strong>Omezené čekání (Bounded Waiting):</strong> Musí existovat záruka, že proces, který požádal o vstup do kritické sekce, se do ní dříve či později skutečně dostane (nesmí hladovět).</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">47. Jaké znáte prostředky pro zajištění výlučného přístupu a popište je</h2>
+        <div class="answer">
+            <ul>
+                <li><strong>Zámky (Mutexy):</strong> Nejjednodušší mechanismus. Proces před vstupem do kritické sekce zámek „zamkne“ (zablokuje) a po výstupu jej opět „odemkne“.</li>
+                <li><strong>Semafory:</strong> Jde o celočíselnou proměnnou, se kterou lze provádět pouze dvě atomické operace: <code>wait</code> (snížení) a <code>signal</code> (zvýšení).</li>
+                <li><strong>Monitory:</strong> Vyšší programovací konstrukce (vysokoúrovňový jazyk), která automaticky zajišťuje vzájemné vyloučení bez nutnosti manuálního zamykání vývojářem.</li>
+                <li><strong>Zasílání zpráv:</strong> Procesy si vyměňují data skrze zprávy, kde synchronizaci doručení hlídá samotný operační systém.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">48. Jaké jsou základní algoritmy semaforů a popište je</h2>
+        <div class="answer">
+            <ul>
+                <li><strong>Binární semafor (Mutex):</strong> Hodnota semaforu může být pouze 0 nebo 1. Používá se výhradně pro zajištění vzájemného vyloučení jednoho zdroje.</li>
+                <li><strong>Čítací semafor:</strong> Hodnota může nabývat libovolných nezáporných celých čísel. Používá se pro synchronizaci přístupu k omezenému počtu identických prostředků (pool prostředků).</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">49. Popište komunikaci mezi procesy pomocí zasílání zpráv</h2>
+        <div class="answer">
+            Synchronizace probíhá výměnou zpráv mezi procesy skrze systémové fronty. Pokud proces čeká na zprávu z fronty (pomocí operace <code>receive</code>), je automaticky operačním systémem zablokován, dokud mu jiný proces zprávu nepošle (pomocí operace <code>send</code>). Tím je zajištěna vestavěná synchronizace bez nutnosti sdílení paměti.
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">50. Co je to uváznutí procesů a jaké jsou podmínky uváznutí?</h2>
+        <div class="answer">
+            Uváznutí je stav, kdy je množina procesů zablokována, protože každý z nich vlastní nějaký prostředek a zároveň čeká na jiný prostředek, který drží jiný proces z této množiny.
+            <p><span class="highlight">Čtyři nutné podmínky uváznutí:</span></p>
+            <ol>
+                <li><strong>Vzájemné vyloučení (Mutual Exclusion):</strong> Alespoň jeden prostředek musí být v režimu ne-sdílení (může ho v danou chvíli používat jen jeden proces).</li>
+                <li><strong>Držení a čekání (Hold and Wait):</strong> Proces drží alespoň jeden prostředek a zároveň čeká na získání dalších prostředků, které aktuálně drží jiné procesy.</li>
+                <li><strong>Nemožnost předběhnutí (No Preemption):</strong> Prostředky nelze procesu násilím odebrat; proces je musí uvolnit dobrovolně po dokončení své práce.</li>
+                <li><strong>Cirkulární čekání (Circular Wait):</strong> Musí existovat uzavřený řetězec procesů, kde každý čeká na prostředek držený následujícím členem řetězce a poslední čeká na prvního.</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">51. Vysvětlete graf přidělování zdrojů v OS a k čemu slouží</h2>
+        <div class="answer">
+            Jedná se o grafický model používaný k analýze stavu přidělení prostředků v operačním systému a k detekci možných uváznutí (analýza bezpečnosti). Uzly představují procesy a prostředky, hrany pak vyjadřují buď požadavek procesu o prostředek, nebo jeho reálné přidělení procesu. Pokud graf obsahuje uzavřený cyklus, indikuje to uváznutí.
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">52. Jak se dá řešit uváznutí procesů a popište metody</h2>
+        <div class="answer">
+            <ul>
+                <li><strong>Prevence:</strong> Nastavit striktní pravidla systému tak, aby kruhové čekání nebo jiná ze 4 podmínek uváznutí vůbec nemohla vzniknout.</li>
+                <li><strong>Vyhýbání:</strong> Dynamické vyhodnocování. Systém předvídá požadavky a nedovolí provést riskantní operace, které by vedly k nebezpečnému stavu (např. Bankéřův algoritmus).</li>
+                <li><strong>Zotavení:</strong> Pokud uváznutí nastane, systém ho detekuje a jeden či více procesů „obětuje“ (ukončí) nebo jim odebere zdroje, aby se uvolnilo zablokované místo.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">53. Pomocí kterého algoritmu lze se vyhnout uváznutí a popište jej</h2>
+        <div class="answer">
+            <strong>Bankéřův algoritmus:</strong> Algoritmus získal svůj název podle analogie s bankou, která musí obhospodařovat skupinu klientů (procesů) a jejich žádosti o úvěry (prostředky). Banka nikdy nesmí půjčit tolik peněz, aby nemohla uspokojit potřeby alespoň jednoho klienta, který by následně splatil svůj dluh a tím uvolnil prostředky pro ostatní. Sleduje se tak, zda po přidělení zdroje zůstane systém v tzv. bezpečném stavu.
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">54. Co je to vlákno a čím se liší od procesu?</h2>
+        <div class="answer">
+            Vlákno je základní jednotka vykonávání kódu v rámci jednoho procesu. Zatímco tradiční proces je „těžkopádná“ entita, která vlastní samostatný izolovaný paměťový prostor, přidělené systémové zdroje a komunikační kanály, vlákno je odlehčený (lehčí) objekt, který běží uvnitř tohoto procesu a sdílí s ostatními vlákny stejnou paměť a data.
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">55. Jaké jsou úlohy správce operační paměti?</h2>
+        <div class="answer">
+            <ul>
+                <li>Sledování stavu paměti (které části jsou volné a které obsazené)</li>
+                <li>Efektivní přidělování a uvolňování paměti pro procesy</li>
+                <li>Zajištění logické a fyzické adresace (překlad adres)</li>
+                <li>Ochrana paměti před neoprávněným přístupem mezi procesy</li>
+                <li>Správa virtuální paměti</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">56. Uveďte strategie přidělování paměti</h2>
+        <div class="answer">
+            <ul>
+                <li><strong>Spojité přidělování:</strong> Procesy jsou v paměti RAM uloženy jako jeden souvislý, nepřerušený blok adres.</li>
+                <li><strong>Stránkování (Paging):</strong> Metoda, která odstraňuje nutnost mít proces v paměti v jednom kuse. Paměť i proces se dělí na malé pevné bloky.</li>
+                <li><strong>Segmentace:</strong> Dělí program na logické celky proměnné velikosti (segmenty) podle jejich účelu (např. kód, data, zásobník).</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">57. Jak se dá řešit problém většího procesu ukládaného do menší paměti?</h2>
+        <div class="answer">
+            <ul>
+                <li><strong>Odkládání (Swapping):</strong> Pokud v paměti není dostatek místa, OS vybere jiný proces, který právě „nepracuje“ (je v nečinném stavu), a celý jej odloží (swapuje) z operační paměti na pevný disk. Tím se uvolní souvislý blok RAM, do kterého lze nahrát nový velký proces.</li>
+                <li><strong>Stránkování na žádost (Demand Paging):</strong> Adresový prostor procesu se rozdělí na menší části – stránky. Do fyzické RAM se z disku nahrají pouze ty konkrétní stránky, které proces v danou vteřinu skutečně potřebuje k vykonávání instrukcí.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">58. Jak se určuje výsledná adresa při rozdělení paměti na bloky proměnné velikosti?</h2>
+        <div class="answer">
+            <div class="formula">Fyzická adresa = Základní adresa + Logická adresa</div>
+            <ul>
+                <li><strong>Základní adresa:</strong> Číslo, kde program v paměti fyzicky začíná (určuje ho a nastavuje operační systém).</li>
+                <li><strong>Logická adresa:</strong> Relativní adresa (posun), kterou si počítá program sám od nuly.</li>
+            </ul>
+            Procesor tyto dvě hodnoty v reálném čase sečte a získá přesné fyzické místo v RAM. Pokud by součet přesáhl povolenou mez přiděleného bloku, procesor vyhlásí chybu (Segmentation Fault) a přístup zablokuje.
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">59. Co je to fragmentace paměti a jak se dá řešit?</h2>
+        <div class="answer">
+            Fragmentace je stav, kdy je operační paměť (RAM) rozkouskována na malé, nesouvislé bloky volného prostoru. I když je celkově v systému dostatek volného místa, nelze jej pro nový proces využít, protože není souvislé.
+            <p><strong>Řešení:</strong> Řešením fragmentace paměti je buď <strong>kompakce</strong> (přesun obsazených bloků k sobě, obdoba defragmentace disku), nebo přechod na moderní nespisovné <strong>stránkování (paging)</strong>.</p>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">60. Jak se určuje výsledná adresa při stránkování?</h2>
+        <div class="answer">
+            Určení adresy probíhá ve třech krocích:
+            <ol>
+                <li><strong>Rozklad:</strong> Logická adresa generovaná procesorem se rozdělí na dvě části: <em>číslo stránky</em> a <em>posun (offset)</em> uvnitř této stránky.</li>
+                <li><strong>Překlad:</strong> Systém vezme číslo stránky a vyhledá ho v <strong>Tabulce stránek (Page Table)</strong>, kde zjistí, kterému číslu fyzického rámce v reálné paměti RAM tato stránka odpovídá.</li>
+                <li><strong>Sestavení:</strong> Výsledná fyzická adresa vznikne spojením nalezeného čísla rámce a původního posunu (posun zůstává zcela identický).</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">61. Co je to virtuální paměť a jakou metodou se vytváří?</h2>
+        <div class="answer">
+            Virtuální paměť je technika, díky které počítač pracuje, jako by měl mnohem více operační paměti (RAM), než má ve skutečnosti. Programy tak mohou využívat větší prostor, než kolik se fyzicky vejde do RAM. Vytváří se pomocí metody <strong>stránkování</strong> (mapováním adresního prostoru na pevný disk).
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">62. Co je to stránkování na žádost a kdy se používá?</h2>
+        <div class="answer">
+            Je to metoda správy paměti, při které se stránky programu načítají z disku do operační paměti (RAM) teprve v okamžiku, kdy jsou skutečně potřeba pro vykonání instrukce (při odkazu na ně).
+            <p><strong>Kdy se používá:</strong> Používá se v situacích, kdy je fyzická RAM menší než celkový adresní prostor procesu a je vyžadována optimalizace využití paměti.</p>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">63. Co je to politika nahrazování stránek?</h2>
+        <div class="answer">
+            Politika nahrazování stránek je pravidlo, které operační systém používá v momentě, kdy je operační paměť (RAM) plná, ale proces potřebuje načíst novou stránku z disku. Systém musí vybrat tzv. oběť – rozhodnout, kterou stránku z RAM vyhodit (odložit zpět na disk), aby uvolnil místo pro tu novou.
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">64. Jaké znáte algoritmy nahrazování stránek a vysvětlete princip</h2>
+        <div class="answer">
+            <ul>
+                <li><strong>FIFO (First-In, First-Out):</strong> Systém vybere k vyhození stránku, která byla do paměti načtena jako první (nejstarší). <em>Nevýhoda:</em> Může vyhodit často používanou stránku.</li>
+                <li><strong>LRU (Least Recently Used):</strong> Vybere stránku, ke které se proces nejdéle v minulosti nepřistoupil (stránka, která „leží ladem“ nejdéle). Je velmi efektivní, ale hardwarově náročná na implementaci.</li>
+                <li><strong>Optimal (OPT):</strong> Vybere k vyhození tu stránku, která nebude potřeba po nejdelší dobu v budoucnosti. Jde o teoretický, v praxi nerealizovatelný algoritmus (OS nevidí do budoucnosti), sloužící jako etalon pro porovnání.</li>
+                <li><strong>LFU (Least Frequently Used):</strong> Vybere stránku, která má na svém čítači nejnižší počet přístupů (byla používána nejméně často).</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">65. Co to jsou soubory a jak se ukládají?</h2>
+        <div class="answer">
+            Soubor je z pohledu operačního systému abstraktní, jednorozměrná sekvence bajtů, která má dlouhodobou existenci a je uložena na trvalém médiu. Operační systém maskuje fyzickou strukturu sektorů a pomocí souborového systému řeší, jak fyzicky rozmístit data souboru na disk a jak si zapamatovat jejich umístění pomocí různých metod přidělování bloků.
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">66. Jak se určuje adresa bloku na disku?</h2>
+        <div class="answer">
+            Adresa bloku na disku se určuje podle typu souborového systému a metody, jakou daný systém organizuje data. Operační systém k tomu používá adresářové struktury, indexy a tabulky přidělování. Logický požadavek aplikace na čtení bajtů se přes souborový systém přepočítá na konkrétní číslo logického bloku (LBA) nebo cylindru, hlavy a sektoru (CHS) disku.
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">67. Jaké znáte metody obsluhy požadavků na přístup k disku? Vysvětlete výhody a nevýhody</h2>
+        <div class="answer">
+            Metody plánování disku určují pořadí zpracování požadavků, aby se minimalizoval pohyb mechanické hlavy (Seek time):
+            <ul>
+                <li><strong>FCFS (First-Come, First-Served):</strong> Požadavky se vyřizují v pořadí, v jakém přišly.
+                    <br><em>Výhody:</em> Jednoduchost, naprostá spravedlnost (nedochází k odsouvání).
+                    <br><em>Nevýhody:</em> Neefektivní při vysoké zátěži, hlava vykonává dlouhé a zbytečné přejezdy mezi vzdálenými stopami.
+                </li>
+                <li><strong>SSTF (Shortest Seek Time First):</strong> Vždy se vybere požadavek, který je nejblíže aktuální pozici diskové hlavy.
+                    <br><em>Výhody:</em> Minimalizuje čas SEEK, výrazně snižuje přejezdy a zvyšuje propustnost disku.
+                    <br><em>Nevýhody:</em> Hrozí riziko hladovění (starvation) požadavků na okrajových stopách, pokud neustále přicházejí požadavky blíže středu.
+                </li>
+                <li><strong>SCAN (Elevátorový algoritmus):</strong> Hlava se pohybuje kontinuálně od jednoho konce disku k druhému, cestou odbavuje požadavky a na konci směr obrátí.
+                    <br><em>Výhody:</em> Vyrovnanější přístup ke všem cylindrům než u SSTF, eliminuje problém s hladověním (starvation).
+                    <br><em>Nevýhody:</em> Požadavky na cylindry, které hlava právě těsně minula, musí dlouho čekat na celou otočku hlavy.
+                </li>
+                <li><strong>C-SCAN (Circular SCAN):</strong> Hlava se pohybuje pouze jedním směrem, odbavuje požadavky a po dosažení konce se bleskově bez odbavování vrátí na úplný začátek disku.
+                    <br><em>Výhody:</em> Poskytuje konzistentnější a rovnoměrnější dobu čekání napříč celým diskem než klasický SCAN.
+                    <br><em>Nevýhody:</em> Čas strávený rychlým návratem na začátek disku bez obsluhy může být v určitých situacích neefektivní.
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">70. Popište alokační metodu souvislého prostoru a vázané přidělování prostoru na disku</h2>
+        <div class="answer">
+            <ul>
+                <li><strong>Souvislé přidělování:</strong> Soubor zabírá na disku souvislou posloupnost za sebou jdoucích bloků. Adresářová položka obsahuje pouze adresu prvního bloku a celkovou délku (počet bloků). Je velmi rychlé pro čtení, ale trpí obrovskou vnější fragmentací disku.</li>
+                <li><strong>Vázané (řetězené) přidělování:</strong> Soubor je tvořen propojeným seznamem bloků rozházených po disku, kde každý blok obsahuje skrytý ukazatel na následující blok. Adresář obsahuje pouze ukazatel na první blok.
+                    <br><em>Alternativa:</em> Ukazatele jsou vyvedeny mimo datové bloky do speciální tabulky (např. <strong>FAT</strong>). Odstraňuje fragmentaci, ale přímý přístup je pomalý, protože je nutné procházet řetězec od začátku.
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">71. Jaké výhody má indexová alokace oproti jiným alokačním metodám?</h2>
+        <div class="answer">
+            Při indexové alokaci (např. i-uzly / inodes) má každý soubor svůj indexový blok, který obsahuje seznam ukazatelů na konkrétní datové bloky. Výhody jsou:
+            <ul>
+                <li>Úplné odstranění vnější fragmentace disku.</li>
+                <li>Plná podpora přímého (náhodného) přístupu k libovolnému bloku souboru bez sekvenčního procházení.</li>
+                <li>Rychlé vyhledávání konkrétních datových bloků pomocí indexu.</li>
+                <li>Snadný a rychlý růst souborů (nové bloky lze přidělit kdekoli a pouze zapsat do indexu).</li>
+                <li>Možnost hierarchického (víceúrovňového) uspořádání indexů pro správu extrémně velkých souborů.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">72. Jakým způsobem se zajišťuje v operačním systému správa periferních zařízení?</h2>
+        <div class="answer">
+            Správa se zajišťuje pomocí vrstvené architektury, která spolupracuje na bezpečné a efektivní komunikaci procesů s hardwarem. Skládá se ze:
+            <ul>
+                <li><strong>Subsystému nezávislého na zařízení:</strong> Poskytuje operačnímu systému jednotné abstraktní rozhraní a spravuje vyrovnávací paměti (buffering/caching) a fronty požadavků.</li>
+                <li><strong>Subsystému závislého na zařízení:</strong> Zahrnuje konkrétní ovladače zařízení (device drivers) a rutiny pro přímou obsluhu hardwarových přerušení (interrupts).</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">73. Co je to ovladač periferního zařízení a z čeho se skládá?</h2>
+        <div class="answer">
+            Ovladač zařízení (Device Driver) je speciální softwarový modul (program), který slouží jako „překladač“ nebo „tlumočník“ mezi obecnými, standardními požadavky operačního systému a specifickým fyzickým hardwarem.
+            <p><span class="highlight">Skládá se z:</span></p>
+            <ul>
+                <li>Rozhraní pro operační systém (standardní funkce jako read, write, open).</li>
+                <li>Překladové logiky (převod obecných funkcí na instrukce pro daný hardware).</li>
+                <li>Komunikačního rozhraní s hardwarem (registru pro komunikaci se sběrnicí).</li>
+                <li>Rutiny pro přímou obsluhu přerušení (ISR) z daného hardwaru.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">74. Vysvětlete funkce vrstev TCP/IP a uveďte odlišnosti od ISO/OSI</h2>
+        <div class="answer">
+            Model TCP/IP se skládá ze 4 základních vrstev:
+            <div class="diagram-box">
+                <img src="13.png" alt="Model vrstev TCP/IP" />
+            </div>
+            
+            <div class="diagram-box">
+                <img src="14.png" alt="Srovnání modelů TCP/IP a ISO/OSI" />
+            </div>
+            <ol>
+                <li><strong>Aplikační vrstva:</strong> Umožňuje programům (např. HTTP, FTP, SMTP, DNS) pracovat se sítí a připravuje data k odeslání. V ISO/OSI jí odpovídá vrstva aplikační, prezentační a relační.</li>
+                <li><strong>Transportní vrstva:</strong> Zajišťuje koncovou komunikaci mezi konkrétními aplikacemi (porty). Protokol <strong>TCP</strong> garantuje spolehlivý přenos a pořadí doručení, <strong>UDP</strong> je rychlý a nespolehlivý bezspojový přenos.</li>
+                <li><strong>Síťová (Internetová) vrstva:</strong> Odpovídá za logické adresování přes IP adresy a směrování (routing) datových paketů napříč sítěmi (protokol IP).</li>
+                <li><strong>Vrstva síťového rozhraní:</strong> Fyzicky přenáší data „drátově“ nebo „vzduchem“ (datové rámce) mezi zařízením a nejbližším bodem v síti (Ethernet, Wi-Fi). Slučuje fyzickou a linkovou vrstvu ISO/OSI.</li>
+            </ol>
+            <p><em>Hlavní odlišnost od ISO/OSI:</em> TCP/IP je jednodušší a praktičtější model (má 4 vrstvy oproti 7 vrstvám ISO/OSI), přičemž jeho struktura je volnější a lépe odpovídá reálnému fungování internetového stacku.</p>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">75. Co je to IP adresa, uveďte třídy adres a zařaďte konkrétní adresu do třídy</h2>
+        <div class="answer">
+            IP adresa je unikátní číselný identifikátor přiřazený každému zařízení, které komunikuje v počítačové síti využívající internetový protokol. V IPv4 se historicky dělila do následujících tříd podle prvního bajtu:
+            <ul>
+                <li><strong>Třída A:</strong> Velké sítě. Rozsah prvního bajtu: 1–126 (Maska 255.0.0.0).</li>
+                <li><strong>Třída B:</strong> Střední sítě. Rozsah prvního bajtu: 128–191 (Maska 255.255.0.0).</li>
+                <li><strong>Třída C:</strong> Malé sítě. Rozsah prvního bajtu: 192–223 (Maska 255.255.255.0).</li>
+                <li><strong>Třída D:</strong> Vyhrazeno pro Multicast (skupinové vysílání). Rozsah: 224–239.</li>
+                <li><strong>Třída E:</strong> Experimentální účely. Rozsah: 240–255.</li>
+                <li><em>Poznámka:</em> Adresa začínající 127 (např. 127.0.0.1) je vyhrazena pro lokální smyčku (loopback / localhost).</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">76. Co je to doména, k čemu slouží name server?</h2>
+        <div class="answer">
+            <strong>Doména:</strong> Je to snadno zapamatovatelný a čitelný textový název (např. <code>www.google.com</code>), který v síti zastupuje složitou číselnou IP adresu počítače.
+            <br><strong>Name server (DNS):</strong> Funguje jako celosvětový telefonní seznam, který tyto textové domény překládá na reálné číselné IP adresy, se kterými pak mohou pracovat síťové směrovače a servery.
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">77. Co je to RAID 5, jaký je princip a jak se počítá kapacita?</h2>
+        <div class="answer">
+            RAID 5 je metoda uspořádání diskového pole (minimálně ze 3 disků), která kombinuje vysoký výkon (paralelní čtení) s odolností proti výpadku a ochranou dat.
+            <p><strong>Princip:</strong> Data jsou rozkládána po blocích střídavě na všechny disky (striping) a spolu s nimi jsou ukládána paritní data (samoopravné kódy). Parita je <strong>distribuována rovnoměrně napříč všemi disky</strong> v poli. Pokud jeden libovolný disk selže, systém dokáže z paritních informací na zbývajících discích chybějící data za běhu dopočítat.</p>
+            <p><strong>Výpočet kapacity:</strong> Kapacita jednoho disku je vyhrazena pro paritní data. Vzorec pro užitečnou kapacitu, kde $N$ je celkový počet disků a $C$ je kapacita nejmenšího disku:</p>
+            <div class="formula">Užitečná kapacita = (N - 1) * C</div>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">78. K čemu slouží interpret příkazů a jaké znáte typy?</h2>
+        <div class="answer">
+            Slouží jako uživatelský program a prostředník mezi uživatelem a operačním systémem. Jeho hlavním úkolem je přijímat textové nebo grafické příkazy od uživatele, analyzovat (interpretovat) je a následně předávat požadavky a volat příslušné systémové služby jádra OS.
+            <p><span class="highlight">Typy:</span></p>
+            <ul>
+                <li><strong>CLI (Textový / znakový):</strong> Uživatel zadává textové příkazy do řádku (např. Bash, PowerShell, Příkazový řádek).</li>
+                <li><strong>GUI (Grafický):</strong> Uživatel komunikuje pomocí oken, ikon a myši (grafické prostředí OS).</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">79. Co je to tříúrovňová architektura klient/server a jaké jsou varianty rozdělení?</h2>
+        <div class="answer">
+            Je to návrhový vzor v informačních systémech, který logicky rozděluje aplikaci do tří nezávislých vrstev: <em>Prezentační vrstva</em> (uživatelské rozhraní), <em>Aplikační vrstva</em> (byznys logika systému) a <em>Datová vrstva</em> (databáze, úložiště).
+            <p><span class="highlight">Varianty rozdělení:</span></p>
+            <ul>
+                <li><strong>Čisté tříúrovňové (3-Tier):</strong> Každá vrstva běží na vlastním vyhrazeném hardwaru (webový server, aplikační server, DB server). Nejškálovatelnější varianta pro velké systémy.</li>
+                <li><strong>Dvouúrovňové (2-Tier):</strong> Aplikační logika je sloučena buď s klientem (tzv. tlustý klient komunikující přímo s databází), nebo s datovou vrstvou.</li>
+                <li><strong>Jednoúrovňové (1-Tier):</strong> Všechny tři vrstvy běží na jednom jediném počítači (např. vývojová prostředí nebo lokální aplikace vše v jednom).</li>
+                <li><strong>Víceúrovňové (N-Tier):</strong> Rozšířená varianta, kde se aplikační vrstva v cloudových prostředích dále dělí na menší specializované celky a mikroslužby.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">80. Jaký je rozdíl mezi síťovým a distribuovaným operačním systémem?</h2>
+        <div class="answer">
+            Hlavní rozdíl spočívá v míře autonomie uzlů a v transparentnosti pro uživatele:
+            <ul>
+                <li><strong>Síťový operační systém:</strong> Je navržen tak, aby umožňoval propojení více nezávislých počítačů do sítě, přičemž každý počítač si zachovává svou vlastní suverenitu a vlastní správu. Spojuje počítače, aby spolu mohly komunikovat a sdílet zdroje.</li>
+                <li><strong>Distribuovaný operační systém:</strong> Je navržen tak, aby celou síť samostatných počítačů propojil do té míry, že se navenek jeví uživateli jako jeden jediný, celistvý a výkonný superpočítač (skrývá složitost sítě).</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">81. Vysvětlete rozdíl mezi replikací a rozložením dat</h2>
+        <div class="answer">
+            Rozdíl mezi replikací a rozložením dat (striping) spočívá v jejich základním účelu a způsobu nakládání s daty:
+            <ul>
+                <li><strong>Rozložení dat (Striping):</strong> Rozděluje data na menší části a ukládá je paralelně na různé disky či uzly. Je zaměřeno výhradně na <strong>zvýšení výkonu a rychlosti</strong> čtení/zápisu, přičemž neobsahuje žádnou redundanci.</li>
+                <li><strong>Replikace dat:</strong> Kopíruje kompletně stejná, celá data na více různých uzlů současně. Slouží především k zajištění <strong>vysoké dostupnosti, spolehlivosti a odolnosti</strong> systému proti výpadkům.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">82. Čím se vyznačuje distribuovaný operační systém?</h2>
+        <div class="answer">
+            Distribuovaný operační systém se vyznačuje především tím, že před uživatelem a aplikacemi zcela <strong>skrývá složitost sítě</strong> a fyzické umístění hardwaru (tzv. transparentnost polohy). Skupina samostatných uzlů spolupracuje tak těsně, že nabízí jednotné systémové prostředí a navenek vystupuje jako jeden monolitický počítač.
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">83. Vysvětlete princip Network Time protokolu pro synchronizaci hodin</h2>
+        <div class="answer">
+            Princip spočívá v zajištění, aby si všechny počítače v síti udržovaly přesný a synchronizovaný čas, přestože každý z nich má vlastní lokální oscilátor (hodiny), který se v čase přirozeně odchyluje. Počítače zasílají dotazy časovým serverům s přesným časem (Stratum). Protokol matematicky měří dobu přenosu paketu tam a zpět (RTT) a na základě toho eliminuje zpoždění sítě, čímž jemně dolaďuje lokální softwarové hodiny uzlu.
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">84. Jak se implementuje řazení událostí v distribuovaných systémech?</h2>
+        <div class="answer">
+            V distribuovaných systémech nelze spoléhat na přesný fyzický čas, protože hodiny na různých počítačích se vždy mírně rozcházejí. Proto se řazení událostí implementuje pomocí <strong>logické následnosti</strong>, tedy sledováním kauzality (toho, kdo komu poslal jakou zprávu). 
+            <p><span class="highlight">Využívané koncepty:</span></p>
+            <ul>
+                <li><strong>Lamportovy logické hodiny:</strong> Sledují posloupnost a kauzalitu událostí (událost A se stala před B).</li>
+                <li><strong>Vektorové hodiny:</strong> Pokročilejší verze pro přesné zachycení příčinných vztahů v distribuovaném prostředí.</li>
+                <li><strong>Synchronizace fyzického času (NTP):</strong> Používá se jako doplňková metoda tam, kde stačí přibližná shoda reálného času.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">85. Uveďte alespoň jeden algoritmus vzájemného vyloučení v distribuovaných systémech</h2>
+        <div class="answer">
+            K zajištění výlučného přístupu ke sdíleným zdrojům bez centrálního uzlu se v distribuovaných systémech používá například <strong>Ricart-Agrawalův algoritmus</strong>. Je založen na logickém času a rozesílání žádostí všem uzlům v síti. Uzel smí vstoupit do kritické sekce až v momentě, kdy získá explicitní souhlas od všech ostatních uzlů.
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">86. Jak se řeší pojmenování souborů v distribuovaných systémech?</h2>
+        <div class="answer">
+            V distribuovaných systémech (např. v NFS nebo DFS) se pojmenování souborů řeší tak, aby uživatel viděl jeden přehledný celek, i když jsou data fyzicky rozprostřena na mnoha různých serverech. Hlavním cílem je dosáhnout <strong>transparentnosti pojmenování</strong> – aby uživatel z názvu nepoznal, na kterém počítači soubor reálně leží. Používá se mapování lokálních adresářů do jednoho globálního jmenného stromu (Global Name Space).
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">87. Čím se liší soft real-time RTOS od hard real-time RTOS?</h2>
+        <div class="answer">
+            Hlavní rozdíl spočívá v kritičnosti dodržení časového limitu (Deadline):
+            <ul>
+                <li><strong>Hard Real-Time:</strong> Časový limit je absolutně kritický a závazný. Nestihnutí termínu (byť o milisekundu) se považuje za <strong>totální havárii celého systému</strong> (např. řízení airbagů, autopilot, jaderná elektrárna). Prioritou je stoprocentní garance stihnutí.</li>
+                <li><strong>Soft Real-Time:</strong> Časový limit je prioritou, ale občasné drobné překročení termínu nezpůsobí havárii, pouze dočasně sníží kvalitu služby (např. streamování videa, audio přenosy). Prioritou je průměrná rychlost a snaha o dodržení limitů tam, kde je to možné.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">88. Na čem je založeno plánování procesů v RTOS?</h2>
+        <div class="answer">
+            Je založeno na <strong>přísném a striktním dodržení časových limitů (deadlines)</strong>. Hlavním cílem plánovače v RTOS je zajistit, aby nejdůležitější úlohy proběhly vždy včas, deterministicky a s podporou okamžité preempce (přerušení méně důležitého procesu).
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">89. Co je to podmínka plánovatelnosti v RTOS?</h2>
+        <div class="answer">
+            Podmínka plánovatelnosti je <strong>matematický nebo logický test</strong> (vzorec), který nám dává jistotu, že všechny zadané procesy se bezpečně stihnou vykonat v požadovaných časových limitech (deadline), aniž by došlo k jejich „havárii“ (tj. nestihnutí termínu a přetížení systému).
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">90. Jaké jsou základní vrstvy Linuxu a popiš je?</h2>
+        <div class="answer">
+            Linux se skládá z následujících vrstev:
+            <ul>
+                <li><strong>Hardware:</strong> Fyzické komponenty počítače (CPU, RAM, pevné disky, periferie).</li>
+                <li><strong>Jádro (Kernel):</strong> Srdce operačního systému, které přímo spravuje hardware and systémové prostředky.</li>
+                <li><strong>Systémové knihovny:</strong> Základní programové sady (např. glibc), které umožňují běžným programům komunikovat s jádrem.</li>
+                <li><strong>Interpret příkazů (Shell) a grafické rozhraní (GUI):</strong> Uživatelské prostředí, přes které uživatel zadává příkazy a ovládá systém.</li>
+                <li><strong>Aplikace:</strong> Koncový software, se kterým uživatel přímo pracuje (prohlížeč, textové editory).</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">91. Jaké jsou cíle zabezpečení operačních systémů?</h2>
+        <div class="answer">
+            Zabezpečení operačních systémů stojí na třech základních pilířích (tzv. CIA triáda):
+            <ul>
+                <li><strong>Důvěrnost (Confidentiality):</strong> Zajistit, aby k citlivým datům měli přístup pouze ti uživatelé a procesy, kteří k tomu mají patřičné oprávnění.</li>
+                <li><strong>Integrita (Integrity):</strong> Zajistit, aby data nebyla neoprávněně nebo náhodně změněna či poškozena. Systém garantuje, že informace jsou v původním stavu.</li>
+                <li><strong>Dostupnost (Availability):</strong> Zajistit, aby systém a data byly plně dostupné oprávněným uživatelům tehdy, když je potřebují.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">92. Uveďte běžné mechanismy zabezpečení operačních systémů</h2>
+        <div class="answer">
+            Mezi standardní bezpečnostní mechanismy patří: Autentizace a autorizace (přístupová práva), izolace procesů a ochrana paměti, šifrování dat, pravidelné aktualizace systému, monitorování a audit (logování událostí) a ochrana před malwarem a viry.
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">93. Jak se zajišťuje autentizace v operačních systémech a uveďte varianty?</h2>
+        <div class="answer">
+            Autentizace je proces <strong>ověření totožnosti</strong> uživatele před přístupem do systému. Mezi běžné varianty patří:
+            <ul>
+                <li>Uživatelské jméno a heslo / PIN kód.</li>
+                <li>Biometrické údaje (otisk prstu, sken obličeje).</li>
+                <li>Bezpečnostní hardwarové klíče, tokeny nebo čipové karty.</li>
+                <li>Dvoufázové / vícefaktorové ověření (2FA/MFA) kombinující více metod.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">94. Jaké znáte postupy na ochranu procesoru?</h2>
+        <div class="answer">
+            <ul>
+                <li><strong>Režimy procesoru:</strong> Hardwarové rozdělení na Privilegovaný režim (Kernel mode) pro jádro a Uživatelský režim (User mode) pro běžné aplikace.</li>
+                <li><strong>Časové přerušení (Timer interrupt):</strong> Hardwarový časovač, který nedovolí žádnému procesu trvale zablokovat nebo zacyklit procesor.</li>
+                <li><strong>Ochrana paměti:</strong> Zamezení neoprávněného přístupu aplikací do cizího nebo jaderného adresního prostoru.</li>
+                <li><strong>Správa výjimek a chyb:</strong> Bezpečné ošetření chyb za běhu aplikací (např. ošetření dělení nulou).</li>
+                <li><strong>Izolace procesů:</strong> Každý proces běží ve vlastním odděleném virtuálním prostředí.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">95. K čemu je vhodné protokolování v operačních systémech?</h2>
+        <div class="answer">
+            Protokolování (logování) slouží jako <strong>kontinuální záznam všech důležitých událostí</strong>, činností a chyb, které se v počítači staly. Je naprosto klíčové pro analýzu softwarových chyb, provádění bezpečnostních auditů a zpětné dohledání příčin pádů nebo nestability systému.
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">96. Jakým způsobem lze spustit více operačních systémů na jednom počítači?</h2>
+        <div class="answer">
+            <ul>
+                <li><strong>Pomocion virtualizace:</strong> Uvnitř stávajícího běžícího systému se pomocí hypervizoru (např. VirtualBox) spustí jeden nebo více izolovaných „hostovaných“ operačních systémů současně.</li>
+                <li><strong>Multi-boot (Dual-boot):</strong> Rozdělí se disk na více samostatných oddílů a na každý se nainstaluje jiný OS. Při startu počítače si uživatel v bootovacím menu vybere, který chce spustit.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">97. Vysvětlete, co je to virtualizace operačních systémů</h2>
+        <div class="answer">
+            Virtualizace operačních systémů je technologie, která umožňuje spustit jeden nebo více „virtuálních“ operačních systémů současně uvnitř jednoho fyzického počítače, přičemž tyto systémy efektivně a bezpečně sdílejí jeho hardwarové zdroje.
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">98. Co je to hypervizor a popište typy?</h2>
+        <div class="answer">
+            Je to specializovaný software, firmware nebo hardware, který umožňuje vytvoření a správu virtuálních strojů. Jeho hlavním úkolem je „oklamat“ jednotlivé virtuální operační systémy tak, aby si myslely, že běží na vlastním samostatném hardwaru.
+            <p><span class="highlight">Typy hypervizorů:</span></p>
+            <ul>
+                <li><strong>Hypervizor typu 1 ("Bare-metal"):</strong> Tento typ hypervizoru běží přímo na fyzickém hardwaru počítače, bez potřeby jakéhokoliv hostitelského operačního systému (např. VMware ESXi).</li>
+                <li><strong>Hypervizor typu 2 ("Hosted"):</strong> Tento typ běží jako aplikace uvnitř běžného, již spuštěného operačního systému (např. Windows, Linux), jako je tomu například u nástroje VirtualBox.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">99. Co je to hardwarově asistovaná virtualizace?</h2>
+        <div class="answer">
+            Je technologie, která využívá <strong>speciální funkce a rozšířené instrukční sady přímo v procesoru</strong> (CPU, např. Intel VT-x nebo AMD-V) k tomu, aby virtualizace běžela podstatně rychleji, bezpečněji a efektivněji bez nutnosti složité softwarové emulace procesoru.
+        </div>
+    </div>
+
+    <div class="qa-card">
+        <h2 class="question">100. Jak se realizuje virtualizace vstupů a výstupů?</h2>
+        <div class="answer">
+            Běžná komunikace s hardwarem probíhá tak, že operační systém zapisuje data do paměti a do speciálních hardwarových registrů posílá instrukce (např. adresu a délku dat), co se má s daty udělat (např. odeslat síťovou kartou). 
+            <p>Při virtualizaci se tyto registry pro hostovaný operační systém emulují pomocí mechanismu <strong>"trap-and-emulate"</strong>:</p>
+            <ul>
+                <li><strong>Trap (Zachycení):</strong> Když se hostovaný (virtuální) OS pokusí zapsat instrukci přímo do hardwarového registru, procesor tuto operaci jako neprivilegovanou zablokuje a vyvolá hardwarovou výjimku. Řízení se okamžitě předá hypervizoru.</li>
+                <li><strong>Emulate (Emulace):</strong> Hypervizor zachytí informaci o tom, co chtěl virtuální OS s hardwarem provést, a tuto akci softwarově nasimuluje ve virtuálním prostředí.</li>
+                <li><strong>Návrat:</strong> Jakmile hypervizor operaci dokončí, vrátí řízení zpět hostovanému OS, který pokračuje v provádění dalšího kódu, jako by se nic nestalo.</li>
+            </ul>
+        </div>
+    </div>
+    </div></div> <script src="script.js"></script>
+</body>
+</html>
