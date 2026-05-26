@@ -33,6 +33,7 @@ header p {
     max-width: 1000px;
     margin: 30px auto;
     padding: 0 20px;
+    box-sizing: border-box;
 }
 
 /* === STUDIJNÍ POHLED & KARTY (STUDY VIEW) === */
@@ -57,7 +58,7 @@ header p {
     margin: 0;
     font-size: 1.2rem;
     color: #1e3c72;
-    border-bottom: 1px solid #eee; /* Opraven podivný odstín #eed na čistou šedou */
+    border-bottom: 1px solid #eee;
     font-weight: 600;
 }
 
@@ -93,6 +94,9 @@ pre {
     overflow-x: auto;
     font-family: 'Courier New', Courier, monospace;
     margin: 10px 0;
+    max-width: 100%;
+    box-sizing: border-box;
+    white-space: pre-wrap;
 }
 
 .highlight {
@@ -139,25 +143,19 @@ pre {
 .diagram-box img, .flashcard img {
     max-width: 100%;
     height: auto;
+    max-height: 320px; /* Brání tomu, aby obří schéma odsunulo všechno z displeje mobilu */
+    object-fit: contain;
     border-radius: 6px;
     margin: 10px auto;
     display: block;
 }
 
-.placeholder-image {
-    background-color: #eaeded;
-    border: 2px dashed #bdc3c7;
-    color: #7f8c8d;
-    padding: 20px;
-    text-align: center;
-    margin: 15px 0;
-    border-radius: 6px;
-    font-size: 0.95rem;
-}
-
 /* === NAVIGACE A ROZLOŽENÍ POHLEDŮ === */
 .nav-container {
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
     margin: 20px 0;
 }
 
@@ -171,7 +169,9 @@ pre {
 .actions {
     display: flex;
     gap: 10px;
-    flex-wrap: wrap; /* Zajišťuje, že se tlačítka na mobilu poskládají pod sebe */
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 15px;
 }
 
 /* === TESTOVACÍ MODUL (TEST VIEW) === */
@@ -224,7 +224,6 @@ pre {
 }
 
 /* === UNIFIKOVANÁ TLAČÍTKA === */
-/* Sloučeny obě původní kolidující definice .btn */
 .btn {
     display: inline-flex;
     align-items: center;
@@ -243,7 +242,6 @@ pre {
     text-decoration: none;
 }
 
-/* Efekty stavů tlačítek */
 .btn:hover {
     transform: translateY(-1px);
     box-shadow: 0 6px 8px rgba(0,0,0,0.15);
@@ -262,7 +260,6 @@ pre {
     box-shadow: none;
 }
 
-/* Barevné varianty tlačítek */
 .btn-primary {
     background-color: #1e3c72;
     color: #ffffff;
@@ -291,7 +288,6 @@ pre {
 .btn-secondary:hover {
     background-color: #e2e8f0;
     color: #1a202c;
-    box-shadow: none;
 }
 
 .btn-outline {
@@ -306,35 +302,38 @@ pre {
     color: #ffffff;
 }
 
-
 /* === STYLY PRO RESPONSIVNÍ 3D KARTIČKY === */
 .flashcard-container {
     perspective: 1000px;
     width: 100%;
     max-width: 650px;
     margin: 25px auto;
+    padding: 0 15px;
+    box-sizing: border-box;
 }
 
 .flashcard {
     width: 100%;
     position: relative;
     transform-style: preserve-3d;
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     background-color: #ffffff;
     cursor: pointer;
-    transform: translate3d(0,0,0); /* HW akcelerace pro hladší animaci */
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
-/* Rotace celé karty při otočení */
+/* Otočení celého boxu karty */
 .flashcard.flipped {
     transform: rotateY(180deg);
 }
 
 .flashcard-front, .flashcard-back {
     width: 100%;
-    min-height: 250px;
+    min-height: 280px; 
     padding: 30px;
     box-sizing: border-box;
     border-radius: 12px;
@@ -345,22 +344,16 @@ pre {
     justify-content: center;
     align-items: center;
     
-    /* Cross-browser podpora pro skrytí zadní strany při otáčení */
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    transition: opacity 0.3s;
+    -webkit-backface-visibility: hidden !important;
+    backface-visibility: hidden !important;
 }
 
-/* Přední strana kartičky */
 .flashcard-front {
     background-color: #ffffff;
     color: #333;
     border-top: 5px solid #17a2b8;
-    position: relative;
-    z-index: 2;
 }
 
-/* Zadní strana - výchozí skrytý stav */
 .flashcard-back {
     background-color: #f8f9fa;
     color: #102a43;
@@ -370,28 +363,26 @@ pre {
     top: 0;
     left: 0;
     height: 100%;
-    opacity: 0;
-    pointer-events: none;
 }
 
-/* PŘEKLOPENÝ STAV: Prohození pozicování pro automatickou výšku */
+/* Ochrana proti prosvítání a překrývání neaktivních stran */
+.flashcard:not(.flipped) .flashcard-front {
+    display: flex !important;
+    position: relative;
+}
+.flashcard:not(.flipped) .flashcard-back {
+    display: none !important;
+}
+
 .flashcard.flipped .flashcard-front {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    opacity: 0;
-    pointer-events: none;
+    display: none !important;
 }
-
 .flashcard.flipped .flashcard-back {
+    display: flex !important;
     position: relative;
     height: auto;
-    opacity: 1;
-    pointer-events: auto;
 }
 
-/* Popisky uvnitř kartiček */
 .card-label {
     font-size: 11px;
     text-transform: uppercase;
@@ -399,4 +390,34 @@ pre {
     color: #888;
     margin-bottom: 15px;
     font-weight: bold;
+}
+
+/* === ZESÍLENÁ RESPONZIVITA PRO MOBILY (OPRAVA) === */
+@media screen and (max-width: 580px) {
+    .container {
+        padding: 0 10px;
+        margin: 15px auto;
+    }
+
+    .actions {
+        flex-direction: column !important;
+        width: 100% !important;
+        gap: 8px !important;
+    }
+
+    .actions .btn {
+        width: 100% !important;
+        box-sizing: border-box !important;
+        padding: 14px 20px !important; /* Větší plocha pro prst */
+    }
+
+    .flashcard-front, 
+    .flashcard.flipped .flashcard-back {
+        padding: 20px 15px !important;
+        min-height: 320px !important; /* Více místa do výšky na úzkém displeji */
+    }
+    
+    header h1 {
+        font-size: 1.8rem;
+    }
 }
