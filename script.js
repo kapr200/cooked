@@ -63,6 +63,22 @@ function clearSavedProgress() {
     });
 }
 
+function handleSearch(e) {
+    const searchText = e.target.value.toLowerCase();
+    const cards = document.querySelectorAll('.qa-card');
+
+    cards.forEach(card => {
+        // Oprava selektoru přímo na váš <h2> element .question
+        const qText = card.innerText.toLowerCase(); 
+        const aText = card.querySelector('.answer').innerText.toLowerCase();
+
+        if (qText.includes(searchText) || aText.includes(searchText)) {
+            card.style.display = ''; 
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}
 function saveAllQuestionsProgress() {
     questions.forEach((q, index) => {
         if (q.done) {
@@ -81,6 +97,11 @@ window.onload = function() {
     if (checkbox) {
         checkbox.checked = true; // Zajištění výchozího zaškrtnutí
         checkbox.addEventListener('change', handleRememberToggle);
+    }
+    // Aktivace vyhledávacího pole na první stránce
+    const searchInput = document.getElementById('search-input');
+    if (searchInput) {
+        searchInput.addEventListener('input', handleSearch);
     }
 
     // BEZCHYBNÉ OVLÁDÁNÍ KARTIČKY PRO PC I MOBIL
@@ -116,12 +137,21 @@ function hideAllViews() {
     if (document.getElementById('btn-toggle-study')) document.getElementById('btn-toggle-study').style.display = 'inline-block';
     if (document.getElementById('btn-toggle-test')) document.getElementById('btn-toggle-test').style.display = 'inline-block';
     if (document.getElementById('btn-toggle-flashcards')) document.getElementById('btn-toggle-flashcards').style.display = 'inline-block';
+    if (document.getElementById('search-input')) document.getElementById('search-input').style.display = 'none';
 }
 
 function startStudy() {
     hideAllViews();
     document.getElementById('study-view').style.display = 'block';
     document.getElementById('btn-toggle-study').style.display = 'none';
+    // Zobrazení a vyčištění vyhledávače při návratu na studium
+    const searchInput = document.getElementById('search-input');
+    if (searchInput) {
+        searchInput.style.display = 'inline-block';
+        searchInput.value = '';
+        // Znovu zobrazí všechny dříve odfiltrované karty
+        document.querySelectorAll('.qa-card').forEach(card => card.style.display = '');
+    }
 }
 
 function startTest() {
