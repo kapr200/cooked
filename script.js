@@ -28,7 +28,11 @@ function initializeQuestions() {
         questions.push({ q: qHeader, a: aContent, done: isDone });
     });
     
-    document.getElementById('total-questions-num').innerText = questions.length;
+    // Ochrana pro případ, že element na stránce chybí
+    const totalQuestionsNum = document.getElementById('total-questions-num');
+    if (totalQuestionsNum) {
+        totalQuestionsNum.innerText = questions.length;
+    }
     
     // Checkbox bude na začátku vždy zaškrtnutý
     const checkbox = document.getElementById('toggle-remember');
@@ -63,13 +67,13 @@ function clearSavedProgress() {
     });
 }
 
+// Live vyhledávání na úvodní stránce
 function handleSearch(e) {
     const searchText = e.target.value.toLowerCase();
     const cards = document.querySelectorAll('.qa-card');
 
     cards.forEach(card => {
-        // Oprava selektoru přímo na váš <h2> element .question
-        const qText = card.innerText.toLowerCase(); 
+        const qText = card.querySelector('.question').innerText.toLowerCase(); 
         const aText = card.querySelector('.answer').innerText.toLowerCase();
 
         if (qText.includes(searchText) || aText.includes(searchText)) {
@@ -79,6 +83,7 @@ function handleSearch(e) {
         }
     });
 }
+
 function saveAllQuestionsProgress() {
     questions.forEach((q, index) => {
         if (q.done) {
@@ -98,6 +103,7 @@ window.onload = function() {
         checkbox.checked = true; // Zajištění výchozího zaškrtnutí
         checkbox.addEventListener('change', handleRememberToggle);
     }
+    
     // Aktivace vyhledávacího pole na první stránce
     const searchInput = document.getElementById('search-input');
     if (searchInput) {
@@ -113,7 +119,6 @@ window.onload = function() {
         if (supportsTouch) {
             // Pro mobily: reaguje okamžitě na konec dotyku bez prodlevy
             flashcard.addEventListener('touchend', function(e) {
-                // Zabráníme falešnému dvojitému kliknutí, které mobily občas emulují
                 e.preventDefault(); 
                 toggleFlashcardFlip();
             });
@@ -137,6 +142,8 @@ function hideAllViews() {
     if (document.getElementById('btn-toggle-study')) document.getElementById('btn-toggle-study').style.display = 'inline-block';
     if (document.getElementById('btn-toggle-test')) document.getElementById('btn-toggle-test').style.display = 'inline-block';
     if (document.getElementById('btn-toggle-flashcards')) document.getElementById('btn-toggle-flashcards').style.display = 'inline-block';
+    
+    // Skryjeme vyhledávač v jiných režimech než studium
     if (document.getElementById('search-input')) document.getElementById('search-input').style.display = 'none';
 }
 
@@ -144,6 +151,7 @@ function startStudy() {
     hideAllViews();
     document.getElementById('study-view').style.display = 'block';
     document.getElementById('btn-toggle-study').style.display = 'none';
+    
     // Zobrazení a vyčištění vyhledávače při návratu na studium
     const searchInput = document.getElementById('search-input');
     if (searchInput) {
@@ -166,7 +174,6 @@ function startTest() {
     showQuestion();
 }
 
-// NOVÝ REŽIM: Spuštění flip kartiček
 function startFlashcards() {
     if (questions.length === 0) {
         alert('Chyba: Nenašly se žádné otázky.');
@@ -188,11 +195,11 @@ function showQuestion() {
     const userInput = document.getElementById('test-user-input');
     if (userInput) {
         userInput.value = '';
-        userInput.disabled = false; // Odblokuje pole pro novou otázku
+        userInput.disabled = false;
     }
 
-    // Reset textu kontrolního tlačítka na výchozí stav při přechodu na jinou otázku
-    const checkBtn = document.getElementById('btn-check-answer'); // Ujisti se, že tvoje tlačítko v HTML má toto ID
+    // OPRAVENO: id="btn-check" odpovídá vašemu HTML
+    const checkBtn = document.getElementById('btn-check'); 
     if (checkBtn) {
         checkBtn.innerText = 'Zkontrolovat odpověď 🔍';
     }
@@ -202,12 +209,18 @@ function showQuestion() {
         currentNumElement.innerText = parseInt(currentIndex + 1);
     }
     
+    const totalQuestionsNum = document.getElementById('total-questions-num');
+    if (totalQuestionsNum) {
+        totalQuestionsNum.innerText = questions.length;
+    }
+    
     document.getElementById('test-question-area').innerHTML = questions[currentIndex].q;
     document.getElementById('test-correct-answer-text').innerHTML = questions[currentIndex].a;
 
     updateNavigationButtons();
     updateDoneStatusUI();
 }
+
 function updateNavigationButtons() {
     const prevBtn = document.getElementById('btn-prev-question');
     const nextBtn = document.getElementById('btn-next-question');
@@ -247,18 +260,15 @@ function nextQuestion() {
 function showFlashcard() {
     const flashcard = document.getElementById('flashcard-box');
     if (flashcard) {
-        // Resetujeme otočení karty na lícovou stranu při přechodu na úplně novou otázku
         flashcard.classList.remove('flipped'); 
     }
 
-    // Dosazení textů do přední a zadní strany kartičky
     const frontTextElement = document.getElementById('flashcard-front-text');
     const backTextElement = document.getElementById('flashcard-back-text');
     
     if (frontTextElement) frontTextElement.innerHTML = questions[currentIndex].q;
     if (backTextElement) backTextElement.innerHTML = questions[currentIndex].a;
 
-    // Aktualizace počítadla kartiček
     const currentFlashcardNum = document.getElementById('current-flashcard-num');
     if (currentFlashcardNum) {
         currentFlashcardNum.innerText = parseInt(currentIndex + 1);
@@ -269,7 +279,6 @@ function showFlashcard() {
         totalFlashcardsNum.innerText = questions.length;
     }
 
-    // Ovládání tlačítek pod kartičkou
     const prevBtn = document.getElementById('btn-prev-flashcard');
     const nextBtn = document.getElementById('btn-next-flashcard');
     if (prevBtn) prevBtn.disabled = (currentIndex === 0);
@@ -281,11 +290,9 @@ function showFlashcard() {
 function toggleFlashcardFlip() {
     const flashcard = document.getElementById('flashcard-box');
     if (!flashcard) return;
-    
-    // Použijeme bleskové přepnutí třídy. Pokud karta třídu 'flipped' má, smaže ji (otočí se na líc). 
-    // Pokud ji nemá, přidá ji (otočí se na rub). Funguje to spolehlivě z obou stran karty.
     flashcard.classList.toggle('flipped');
 }
+
 function previousFlashcard() {
     if (currentIndex > 0) {
         currentIndex--;
@@ -293,6 +300,7 @@ function previousFlashcard() {
     }
 }
 
+// OPRAVENO: Odstraněna rekurzivní chyba "nekonečného alertu" na konci kartiček
 function nextFlashcard() {
     if (currentIndex < questions.length - 1) {
         currentIndex++;
@@ -353,20 +361,18 @@ function updateDoneStatusUI() {
 function checkAnswer() {
     const feedbackBox = document.getElementById('test-feedback-box');
     const userInput = document.getElementById('test-user-input');
-    const checkBtn = document.getElementById('btn-check-answer'); // Tlačítko, na které uživatel kliká
+    // OPRAVENO: id="btn-check" odpovídá vašemu HTML
+    const checkBtn = document.getElementById('btn-check'); 
     
     if (!feedbackBox) return;
     
-    // Pokud je feedback skrytý -> ZOBRAZÍME HO
     if (feedbackBox.style.display === 'none' || feedbackBox.style.display === '') {
         feedbackBox.style.display = 'block';
-        if (userInput) userInput.disabled = true; // Zamkne vstup, aby nešel upravovat při zobrazeném výsledku
+        if (userInput) userInput.disabled = true; 
         if (checkBtn) checkBtn.innerText = 'Skrýt odpověď 👁️';
-    } 
-    // Pokud je feedback zobrazený -> SKRYJEME HO
-    else {
+    } else {
         feedbackBox.style.display = 'none';
-        if (userInput) userInput.disabled = false; // Znovu odblokuje pole, pokud chce uživatel psát dál
+        if (userInput) userInput.disabled = false; 
         if (checkBtn) checkBtn.innerText = 'Zkontrolovat odpověď 🔍';
     }
 }
