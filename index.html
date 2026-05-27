@@ -40,9 +40,17 @@
             </div>
         </div>
 
+        <div style="display: flex; gap: 10px; justify-content: center;">
+            <label for="toggle-hide-flash" class="checkbox-label">
+                <input type="checkbox" id="toggle-hide-flash" checked>
+                <span>Skrýt číslo otázky</span>
+            </label>
+        </div>
+
         <div class="navigation-buttons-group" style="display: flex; gap: 10px; justify-content: center;">
             <button id="btn-prev-flashcard" class="btn btn-secondary" onclick="previousFlashcard()">← Předchozí</button>
             <button id="btn-next-flashcard" class="btn btn-primary" onclick="nextFlashcard()">Další kartička →</button>
+            <button id="btn-random-flashcard" class="btn btn-secondary" onclick="randomFlashcard()">? Náhodná</button>
         </div>
     </div>
 
@@ -71,9 +79,17 @@
         </label>
     </div>
 
+    <div class="settings-box">
+        <label for="toggle-hide" class="checkbox-label">
+            <input type="checkbox" id="toggle-hide" checked>
+            <span>Skrýt číslo otázky</span>
+        </label>
+    </div>
+
     <div class="navigation-buttons-group">
         <button id="btn-prev-question" class="btn btn-secondary" onclick="previousQuestion()">← Zpět</button>
         <button id="btn-next-question" class="btn btn-secondary" onclick="nextQuestion()">Další →</button>
+        <button id="btn-random-question" class="btn btn-secondary" onclick="randomQuestion()">? náhodná</button>
     </div>
 
     <div id="test-feedback-box" class="test-feedback" style="display: none;">

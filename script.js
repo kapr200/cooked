@@ -2,6 +2,8 @@
 let questions = [];
 let currentIndex = 0;
 let isCardFlipped = false; // Pomocná proměnná pro stav otočení kartičky
+let hideQuestionNumber = false;
+let hideQuestionNumberFlash = false;
 
 // Načte otázky z DOMu POUZE JEDNOU při startu stránky
 function initializeQuestions() {
@@ -57,6 +59,25 @@ function handleRememberToggle() {
     }
 }
 
+function handleHideToggle() {
+    const checkbox = document.getElementById('toggle-hide')
+    if (!checkbox.checked) {
+        hideQuestionNumber = false;
+    } else {
+        hideQuestionNumber = true;
+    }
+}
+
+function handleHideFlashToggle() {
+    const checkbox = document.getElementById('toggle-hide-flash')
+    if (!checkbox.checked) {
+        hideQuestionNumberFlash = false;
+    } else {
+        hideQuestionNumberFlash = true;
+    }
+}
+
+
 function clearSavedProgress() {
     questions.forEach((_, index) => {
         localStorage.removeItem(`q_done_${index}`);
@@ -94,9 +115,19 @@ window.onload = function() {
     initializeQuestions();
     
     const checkbox = document.getElementById('toggle-remember');
+    const checkboxHide = document.getElementById('toggle-hide');
+    const checkboxHideFlash = document.getElementById('toggle-hide-flash')
     if (checkbox) {
         checkbox.checked = true; // Zajištění výchozího zaškrtnutí
         checkbox.addEventListener('change', handleRememberToggle);
+    }
+    if (checkboxHide) {
+        checkboxHide.checked = false;
+        checkboxHide.addEventListener('change', handleHideToggle);
+    }
+    if (checkboxHideFlash) {
+        checkboxHideFlash.checked = false;
+        checkboxHideFlash.addEventListener('change', handleHideFlashToggle);
     }
     // Aktivace vyhledávacího pole na první stránce
     const searchInput = document.getElementById('search-input');
@@ -198,11 +229,23 @@ function showQuestion() {
     }
 
     const currentNumElement = document.getElementById('current-question-num');
-    if (currentNumElement) {
-        currentNumElement.innerText = parseInt(currentIndex + 1);
+    const currentQuestionElement = document.getElementById('test-question-area');
+
+    if (hideQuestionNumber) {
+        currentNumElement.innerText = "??";
+        currentQuestionElement.innerHTML = questions[currentIndex].q.split(/\s+/).slice(1).join(" ");
+    } 
+    else {
+
+        if (currentNumElement) {
+            currentNumElement.innerText = parseInt(currentIndex + 1);
+        }
+        currentQuestionElement.innerHTML = questions[currentIndex].q;
     }
+
     
-    document.getElementById('test-question-area').innerHTML = questions[currentIndex].q;
+    
+    
     document.getElementById('test-correct-answer-text').innerHTML = questions[currentIndex].a;
 
     updateNavigationButtons();
@@ -242,6 +285,11 @@ function nextQuestion() {
     }
 }
 
+function randomQuestion() {
+    currentIndex = Math.floor(Math.random() * questions.length);
+    showQuestion();
+}
+
 // --- LOGIKA PRO FLIP KARTIČKY ---
 
 function showFlashcard() {
@@ -252,17 +300,19 @@ function showFlashcard() {
     }
 
     // Dosazení textů do přední a zadní strany kartičky
+    const currentFlashcardNum = document.getElementById('current-flashcard-num');
     const frontTextElement = document.getElementById('flashcard-front-text');
     const backTextElement = document.getElementById('flashcard-back-text');
     
-    if (frontTextElement) frontTextElement.innerHTML = questions[currentIndex].q;
-    if (backTextElement) backTextElement.innerHTML = questions[currentIndex].a;
-
-    // Aktualizace počítadla kartiček
-    const currentFlashcardNum = document.getElementById('current-flashcard-num');
-    if (currentFlashcardNum) {
-        currentFlashcardNum.innerText = parseInt(currentIndex + 1);
+    if (hideQuestionNumberFlash) {
+        if (frontTextElement) frontTextElement.innerHTML = questions[currentIndex].q.split(/\s+/).slice(1).join(" ");
+        if (currentFlashcardNum) currentFlashcardNum.innerText = "??";
+    } else {
+        if (frontTextElement) frontTextElement.innerHTML = questions[currentIndex].q;
+        if (currentFlashcardNum) currentFlashcardNum.innerText = parseInt(currentIndex + 1);
     }
+    
+    if (backTextElement) backTextElement.innerHTML = questions[currentIndex].a;
     
     const totalFlashcardsNum = document.getElementById('total-flashcards-num');
     if (totalFlashcardsNum) {
@@ -302,6 +352,11 @@ function nextFlashcard() {
         currentIndex = 0;
         showFlashcard();
     }
+}
+
+function randomFlashcard() {
+    currentIndex = Math.floor(Math.random() * questions.length);
+    showFlashcard();
 }
 
 // --- POMOCNÉ FUNKCE STAVŮ (UMÍM/NEUMÍM) ---
